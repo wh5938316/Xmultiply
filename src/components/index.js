@@ -1,3 +1,3 @@
-export {default} from './ColorPicker'
+export {default} from './CanvasModel'
 
-export {default as ColorPicker} from './ColorPicker'
+export {default as CanvasModel} from './CanvasModel'
