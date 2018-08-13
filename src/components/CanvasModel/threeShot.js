@@ -1,1 +1,0 @@
-let THREE = require('three');
