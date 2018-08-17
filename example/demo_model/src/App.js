@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import {ThreeShot, LayerMerge} from './xmultiply';
+import {ThreeShot, LayerMerge} from 'xmultiply';
 let THREE = require('three');
 let OBJLoader = require('three-obj-loader');
 // 绑定loader

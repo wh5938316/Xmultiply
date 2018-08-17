@@ -7,9 +7,9 @@ OBJLoader(THREE);
 const ThreeShot = function(props) {
 
     const {pixel} = props;
-    let loadingModels = 0;
-    let isReady = false;
-    let objects = [];
+    let loadingModels = 0,
+        isReady = false,
+        objects = [];
     
     // 设置透明背景
     const threeRenderer = new THREE.WebGLRenderer( { alpha: true } );
