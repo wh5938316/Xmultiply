@@ -4,6 +4,8 @@ import Layout from '../components/Layout'
 import fetch from 'isomorphic-unfetch'
 import ProductList from '../components/ProductList'
 
+const domain = process.env.NODE_ENV === 'development' ? 'http://www.smultiply.com/' : 'http://118.24.102.96:80/';
+
 class ViewProduct extends Component {
 
   constructor(props) {
@@ -30,7 +32,7 @@ class ViewProduct extends Component {
 }
 
 ViewProduct.getInitialProps = async function (context) {
-  const res = await fetch(`http://www.smultiply.com/api/v1/product/list`)
+  const res = await fetch(`${domain}api/v1/products`)
   const productList = await res.json()
 
   return { productList }

@@ -15,7 +15,7 @@ app.prepare().then(() => {
   server.get('/product/:id', (req, res) => {
     const actualPage = '/ProductDetail'
     const queryParams = { 
-        product: req.params.id 
+        id: req.params.id 
     } 
     app.render(req, res, actualPage, queryParams)
   })

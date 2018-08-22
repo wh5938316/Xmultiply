@@ -3,13 +3,29 @@ import {ThreeShot, LayerMerge} from 'xmultiply'
 
 class XmultiplyCanvas extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      texture: null
+    }
+  }
+
   componentDidMount() {
+    this.draw();
+  }
+  
+  componentWillReceiveProps () {
+    // this.draw();
+  }
+  
+  draw() {
 		const { object, origin, frame, texture } = this.props;
 		if(!object || !origin || !frame || !texture) {
 			this.drawError();
-		}
-    this.drawResult();
-	}
+		} else {
+      this.drawResult();
+    }
+  }
 
 	drawError() {
 		var target = this.refs.canvas;
@@ -33,22 +49,29 @@ class XmultiplyCanvas extends Component {
 		var instance = new ThreeShot({
       pixel: pixel
     });
+    instance.setCamera({
+      'fov': this.props.fov,
+      'pos_x': this.props.cameraPosX,
+      'pos_y': this.props.cameraPosY,
+      'pos_z': this.props.cameraPosZ,
+      'rot_x': this.props.cameraRotX,
+      'rot_y': this.props.cameraRotY,
+      'rot_z': this.props.cameraRotZ,
+    });
     var _this = this;
-		var img = new Image();
-    img.src = texture;
-    img.crossOrigin = "Anonymous";
-    img.onload = function() {
-      var cvs = document.createElement('canvas');
-      cvs.width = pixel * 2;
-      cvs.height = pixel * 2;
-      var ctx = cvs.getContext("2d");
-      ctx.drawImage(img, 0, 0, pixel * 2, pixel * 2);
+    var textureLoad = function(cvs) {
       instance.addObject({
         'id': 2,
         'url': object,
-        'imgs': [cvs],
+        'imgs': [cvs ? cvs : _this.state.texture],
+        'pos_x': _this.props.objectPosX,
+        'pos_y': _this.props.objectPosY,
+        'pos_z': _this.props.objectPosZ,
+        'rot_x': _this.props.objectRotX,
+        'rot_y': _this.props.objectRotY,
+        'rot_z': _this.props.objectRotZ,
         'finish': function() {
-          instance.setMaterial(2, [cvs]);
+          instance.setMaterial(2, [cvs ? cvs : _this.state.texture]);
           var result = instance.shot(pixel);
           // var target = _this.refs.show;
           var img2 = new Image();
@@ -73,6 +96,26 @@ class XmultiplyCanvas extends Component {
           console.log('loading error');
         }
       });
+    }
+    if(!_this.state.texture) {
+      var img = new Image();
+      img.src = texture;
+      img.crossOrigin = "Anonymous";
+      img.onload = function() {
+        if(!_this.state.texture) {
+          var cvs = document.createElement('canvas');
+          cvs.width = pixel * 2;
+          cvs.height = pixel * 2;
+          var ctx = cvs.getContext("2d");
+          ctx.drawImage(img, 0, 0, pixel * 2, pixel * 2);
+          _this.setState({
+            texture: cvs
+          });
+        }
+        textureLoad(cvs);
+      }
+    } else {
+      textureLoad();
     }
 	}
 

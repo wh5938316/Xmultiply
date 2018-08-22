@@ -29,7 +29,7 @@ class ProductList extends Component {
   constructor(props) {
 		super(props);
 		// 可以使用 props了
-		const { threeShot } = this.props;
+		const { objects } = this.props;
 		// let data = [];
 		// threeShot.forEach((v, k) => {
 		// 	console.log(...v);
@@ -37,7 +37,7 @@ class ProductList extends Component {
 		// });
 
 		this.state = {
-			data: threeShot,
+			data: objects,
 			selected: []
 		}
   }
@@ -96,7 +96,7 @@ class ProductList extends Component {
 													/>
 												</TableCell>
 												<TableCell component="th" scope="row" padding="default">
-													<img src={n.img} alt={n.name} width={80} height={80} />
+													<img src={n.preview} alt={n.name} width={80} height={80} />
 												</TableCell>
 												<TableCell component="th" scope="row" padding="default">
 													<Typography variant="headline" component="h3">
