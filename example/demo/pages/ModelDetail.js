@@ -18,7 +18,7 @@ import TextField from '@material-ui/core/TextField';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 
 const PIXEL = 600;
-const domain = process.env.NODE_ENV === 'development' ? 'http://www.smultiply.com/' : 'http://118.24.102.96:80/';
+const domain = process.env.NODE_ENV !== 'development' ? 'http://www.smultiply.com/' : 'http://118.24.102.96:80/';
 
 const styles = theme => ({
   button: {
