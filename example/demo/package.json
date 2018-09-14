@@ -2,8 +2,8 @@
   "name": "create-next-example-app",
   "scripts": {
     "dev": "node server.js",
-    "build": "next build",
-    "start": "node server.js"
+    "build": "NODE_ENV=production next build",
+    "start": "NODE_ENV=production node server.js"
   },
   "dependencies": {
     "@material-ui/core": "^1.5.0",

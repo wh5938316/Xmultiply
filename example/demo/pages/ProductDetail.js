@@ -3,7 +3,8 @@ import Layout from '../components/Layout'
 import fetch from 'isomorphic-unfetch'
 import ModelList from '../components/ModelList'
 
-const domain = process.env.NODE_ENV !== 'development' ? 'http://www.smultiply.com/' : 'http://118.24.102.96:80/';
+// const domain = process.env.NODE_ENV === 'development' ? 'http://www.smultiply.com/' : 'http://118.24.102.96:80/';
+const domain = process.env.NODE_ENV === 'development' ? 'http://118.24.102.96:80/' : 'http://118.24.102.96:80/';
 
 class ViewModel extends Component {
 

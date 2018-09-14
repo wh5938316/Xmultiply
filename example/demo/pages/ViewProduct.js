@@ -4,7 +4,8 @@ import Layout from '../components/Layout'
 import fetch from 'isomorphic-unfetch'
 import ProductList from '../components/ProductList'
 
-const domain = process.env.NODE_ENV !== 'development' ? 'http://www.smultiply.com/' : 'http://118.24.102.96:80/';
+// const domain = process.env.NODE_ENV === 'development' ? 'http://www.smultiply.com/' : 'http://118.24.102.96:80/';
+const domain = process.env.NODE_ENV === 'development' ? 'http://118.24.102.96:80/' : 'http://118.24.102.96:80/';
 
 class ViewProduct extends Component {
 
