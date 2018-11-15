@@ -128,19 +128,19 @@ class ModelDetail extends Component {
       value: value,
       name: name
     };
-    fetch(`${domain}api/v1/object/${this.state.id}`, {
-			method: 'PUT',
-			mode: "cors",
-			body: JSON.stringify(post)
-		}).then( r => {
-			return r.json();
-		}).then(function(json) {
-      const data = json.data;
-      _this.handleChange(data.name, data.value);
-      _this.setState({ successOpen: true });
-		}).catch(function(ex) {
-			console.log('parsing failed', ex);
-		})
+    // fetch(`${domain}api/v1/object/${this.state.id}`, {
+		// 	method: 'PUT',
+		// 	mode: "cors",
+		// 	body: JSON.stringify(post)
+		// }).then( r => {
+		// 	return r.json();
+		// }).then(function(json) {
+    //   const data = json.data;
+    //   _this.handleChange(data.name, data.value);
+    //   _this.setState({ successOpen: true });
+		// }).catch(function(ex) {
+		// 	console.log('parsing failed', ex);
+		// })
   }
 
   render() {
@@ -172,6 +172,9 @@ class ModelDetail extends Component {
                     cameraPosX={this.state.cameraPosX}
                     cameraPosY={this.state.cameraPosY}
                     cameraPosZ={this.state.cameraPosZ}
+                    lookAtX={this.state.lookAtX}
+                    lookAtY={this.state.lookAtY}
+                    lookAtZ={this.state.lookAtZ}
                     cameraRotX={this.state.cameraRotX}
                     cameraRotY={this.state.cameraRotY}
                     cameraRotZ={this.state.cameraRotZ}
@@ -523,32 +526,40 @@ class ModelDetail extends Component {
 
 ModelDetail.getInitialProps = async function (context) {
   const { id } = context.query
-  const res = await fetch(`${domain}api/v1/object/${id}`)
-  const resData = await res.json()
-  let info = [];
-  if(!resData.errors) {
-    info = resData.data;
-  }
-	// const info = {
-	// 	'name': 'Left Shoes',
-	// 	'frame': '/static/three/shoes.png',
-	// 	'origin': '/static/three/shoes.jpg',
-  //   'object': '/static/three/shoes.obj',
-  //   'texture': '/static/three/texture.jpg',
-  //   'objectPosX': 0,
-  //   'objectPosY': 0,
-  //   'objectPosZ': 0,
-  //   'objectRotX': 0,
-  //   'objectRotY': 0,
-  //   'objectRotZ': 0,
-  //   'fov': 100,
-  //   'cameraPosX': 0,
-  //   'cameraPosY': 0,
-  //   'cameraPosZ': 0,
-  //   'cameraRotX': 0,
-  //   'cameraRotY': 0,
-  //   'cameraRotZ': 0,
+  // const res = await fetch(`${domain}api/v1/object/${id}`)
+  // const resData = await res.json()
+  // let info = [];
+  // if(!resData.errors) {
+  //   info = resData.data;
   // }
+  
+// FOV：45°
+// 相机坐标：X：-530     Y：180	Z：620
+// 焦点坐标：X：0	Y：100	Z：0
+
+	const info = {
+		'name': 'Left Shoes',
+		'frame': '/static/three/shoes.png',
+		'origin': '/static/three/shoes_2.jpg',
+    'object': '/static/three/shoes_2.obj',
+    'texture': '/static/three/shoes_2.1.png',
+    'objectPosX': 0,
+    'objectPosY': 0,
+    'objectPosZ': 0,
+    'objectRotX': 0,
+    'objectRotY': 0,
+    'objectRotZ': 0,
+    'fov': 45,
+    'cameraPosX': -530,
+    'cameraPosY': 180,
+    'cameraPosZ': 620,
+    'lookAtX': 0,
+    'lookAtY': 100,
+    'lookAtZ': 0,
+    'cameraRotX': 0,
+    'cameraRotY': 0,
+    'cameraRotZ': 0,
+  }
 
   return { info }
 }

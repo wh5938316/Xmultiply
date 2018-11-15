@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {ThreeShot, LayerMerge} from 'xmultiply'
+import {ThreeShot, LayerMerge} from '../../../src'
 
 class XmultiplyCanvas extends Component {
 
@@ -49,21 +49,25 @@ class XmultiplyCanvas extends Component {
 		var instance = new ThreeShot({
       pixel: pixel
     });
+    console.log(this.props)
     instance.setCamera({
       'fov': this.props.fov,
       'pos_x': this.props.cameraPosX,
       'pos_y': this.props.cameraPosY,
       'pos_z': this.props.cameraPosZ,
-      'rot_x': this.props.cameraRotX,
-      'rot_y': this.props.cameraRotY,
-      'rot_z': this.props.cameraRotZ,
+      // 'rot_x': this.props.cameraRotX,
+      // 'rot_y': this.props.cameraRotY,
+      // 'rot_z': this.props.cameraRotZ,
+      'look_at_x': this.props.lookAtX,
+      'look_at_y': this.props.lookAtY,
+      'look_at_z': this.props.lookAtZ,
     });
     var _this = this;
     var textureLoad = function(cvs) {
       instance.addObject({
         'id': 2,
         'url': object,
-        'imgs': [cvs ? cvs : _this.state.texture],
+        // 'imgs': [cvs ? cvs : _this.state.texture],
         'pos_x': _this.props.objectPosX,
         'pos_y': _this.props.objectPosY,
         'pos_z': _this.props.objectPosZ,
@@ -71,7 +75,7 @@ class XmultiplyCanvas extends Component {
         'rot_y': _this.props.objectRotY,
         'rot_z': _this.props.objectRotZ,
         'finish': function() {
-          instance.setMaterial(2, [cvs ? cvs : _this.state.texture]);
+          instance.setMaterial(2, cvs ? cvs : _this.state.texture, 1);
           var result = instance.shot(pixel);
           // var target = _this.refs.show;
           var img2 = new Image();
@@ -89,7 +93,7 @@ class XmultiplyCanvas extends Component {
             var img3 = new Image();
             img3.src = frame;
             img3.onload = function() {
-							targetx.drawImage(img3, 0, 0, pixel, pixel);
+							// targetx.drawImage(img3, 0, 0, pixel, pixel);
             }
           }
         }, 'error': function(xhr) {

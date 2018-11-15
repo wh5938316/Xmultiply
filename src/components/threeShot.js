@@ -25,12 +25,10 @@ const ThreeShot = function(props) {
     // 点源光 暂时弃用
     // const pointLight = new THREE.PointLight( 0xffffff, 0.8 );
     // scene.add( pointLight );
-    
+
     // 创建相机
-    let camera = new THREE.PerspectiveCamera( 50, 1, 0.1, 3000 );
-    camera.position.x = 0;
-    camera.position.y = 0;
-    camera.position.z = 100;
+    let camera = new THREE.PerspectiveCamera( 45, 1, 0.1, 3000 );
+
     scene.add( camera );
 
     // 准备完毕
@@ -51,26 +49,43 @@ const ThreeShot = function(props) {
     
     ThreeShot.prototype.getCamera = function() {
         return {
-            '_camera': camera,
-            'fov': camera.fov,
-            'pos_x': camera.position.x,
-            'pos_y': camera.position.y,
-            'pos_z': camera.position.z,
-            'rot_x': angleFromRadian(camera.rotation.x),
-            'rot_y': angleFromRadian(camera.rotation.y),
-            'rot_z': angleFromRadian(camera.rotation.y),
+            _camera: camera,
+            fov: camera.fov,
+            position: {
+                x: camera.position.x,
+                y: camera.position.y,
+                z: camera.position.z,
+            },
+            rotation: {
+                x: camera.rotation.x,
+                y: camera.rotation.y,
+                z: camera.rotation.y,
+            }
         }
     }
     
     ThreeShot.prototype.setCamera = function(props) {
-        const {fov, pos_x, pos_y, pos_z, rot_x, rot_y, rot_z} = props;
+        const {fov, pos_x, pos_y, pos_z, rot_x, rot_y, rot_z, look_at_x, look_at_y, look_at_z} = props;
+
+        // 设置 相机视场角
         camera.fov = isNum(fov) ? fov : camera.position.x;
-        camera.position.x = isNum(pos_x) ?  pos_x : camera.position.x;
-        camera.position.y = isNum(pos_y) ?  pos_y : camera.position.y;
-        camera.position.z = isNum(pos_z) ?  pos_z : camera.position.z;
-        camera.rotation.x = isNum(rot_x) ?  radianFromAngle(rot_x) : camera.rotation.x;
-        camera.rotation.y = isNum(rot_y) ?  radianFromAngle(rot_y) : camera.rotation.y;
-        camera.rotation.z = isNum(rot_z) ?  radianFromAngle(rot_z) : camera.rotation.y;
+
+        // 设置 相机位置坐标
+        camera.position.x = isNaN(pos_x) ? camera.position.x : pos_x;
+        camera.position.y = isNaN(pos_y) ? camera.position.y : pos_y;
+        camera.position.z = isNaN(pos_z) ? camera.position.z : pos_z;
+
+        // 设置 相机焦点
+        if(!(isNaN(look_at_x) || isNaN(look_at_y) || isNaN(look_at_z))) {
+            camera.lookAt(new THREE.Vector3( look_at_x, look_at_y, look_at_z ))
+        }
+
+        // 设置 相机旋转角
+        if(!(isNaN(rot_x) || isNaN(rot_y) || isNaN(rot_z))) {
+            camera.rotation.x = radianFromAngle(rot_x)
+            camera.rotation.y = radianFromAngle(rot_y)
+            camera.rotation.z = radianFromAngle(rot_z)
+        }
     }
 
     ThreeShot.prototype.findObject = function(id) {
@@ -129,11 +144,14 @@ const ThreeShot = function(props) {
             obj.rotation.x = rot_x ? radianFromAngle(rot_x) : 0;
             obj.rotation.y = rot_y ? radianFromAngle(rot_y): 0;
             obj.rotation.z = rot_z ? radianFromAngle(rot_z) : 0;
+
             objects.push({
                 'id': id,
                 'object': obj
             });
+            
             loaded ? loaded('loadModel: ' + id) : defaultLoaded();
+
             if(loadingModels === 0) {
                 isReady = true;
                 finish ? finish() : defaultFinish();
@@ -141,17 +159,26 @@ const ThreeShot = function(props) {
         }, onProgress, onError);
     }
 
-    ThreeShot.prototype.setMaterial = function(id, imgs) {
+    /**
+     * @param id 模型id
+     * @param canvas 贴图画布
+     * @param index 图层索引
+     */
+    ThreeShot.prototype.setMaterial = function(id, canvas, index) {
 
         var object = this.findObject(id);
+
         if(!object) return false;
 
-        object.object.traverse(function(child) {
-            if(child instanceof THREE.Mesh) {
-                var texture = new THREE.CanvasTexture(imgs[0]);
+        index = index ? index : 0;
+
+        for(let i = 0; i < object.object.children.length; i++) {
+            let child = object.object.children[i];
+            if(child instanceof THREE.Mesh && (i === index)) {
+                let texture = new THREE.CanvasTexture(canvas);
                 child.material.map = texture;
             }
-        });
+        }
     }
 
     ThreeShot.prototype.shot = function(resultPixel) {
@@ -172,4 +199,3 @@ const ThreeShot = function(props) {
 }
 
 export default ThreeShot
-// export {ThreeShot}
