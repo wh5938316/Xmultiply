@@ -98,65 +98,77 @@ const ThreeShot = function(props) {
         return false;
     }
 
-    ThreeShot.prototype.addObject = function(props) {
+    ThreeShot.prototype.addObject = function(obj, props) {
         const {id, url, pos_x, pos_y, pos_z, rot_x, rot_y, rot_z, loaded, error, finish} = props;
 
-        if(this.findObject(id)) return false;
+        // if(this.findObject(id)) return false;
         
-        let loader = new THREE.OBJLoader();
+        // let loader = new THREE.OBJLoader();
         
-        loadingModels++;
-        isReady = false;
+        // loadingModels++;
+        // isReady = false;
 
-        let defaultLoaded = function() {
-            console.log('default loaded');
-        }
+        // let defaultLoaded = function() {
+        //     console.log('default loaded');
+        // }
 
-        let defaultError = function() {
-            console.log('default error');
-        }
+        // let defaultError = function() {
+        //     console.log('default error');
+        // }
 
-        let defaultFinish = function() {
-            console.log('default finish');
-        }
+        // let defaultFinish = function() {
+        //     console.log('default finish');
+        // }
 
-        var onProgress = function ( xhr ) {
-            if ( xhr.lengthComputable ) {
-                var percentComplete = xhr.loaded / xhr.total * 100;
-                console.log( Math.round(percentComplete, 2) + '% downloaded' );
-            }
-        };
+        // var onProgress = function ( xhr ) {
+        //     if ( xhr.lengthComputable ) {
+        //         var percentComplete = xhr.loaded / xhr.total * 100;
+        //         console.log( Math.round(percentComplete, 2) + '% downloaded' );
+        //     }
+        // };
 
-        var onError = function ( xhr ) {
-            error ? error(xhr) : defaultError(xhr);
-            loadingModels--;
-            if(loadingModels === 0) {
-                isReady = true;
-                finish ? finish() : defaultFinish();
-            }
-        };
+        // var onError = function ( xhr ) {
+        //     error ? error(xhr) : defaultError(xhr);
+        //     loadingModels--;
+        //     if(loadingModels === 0) {
+        //         isReady = true;
+        //         finish ? finish() : defaultFinish();
+        //     }
+        // };
+
+        obj.position.x = pos_x ? pos_x : 0;
+        obj.position.y = pos_y ? pos_y: 0;
+        obj.position.z = pos_z ? pos_z : 0;
+        obj.rotation.x = rot_x ? radianFromAngle(rot_x) : 0;
+        obj.rotation.y = rot_y ? radianFromAngle(rot_y): 0;
+        obj.rotation.z = rot_z ? radianFromAngle(rot_z) : 0;
+
+        objects.push({
+            'id': id,
+            'object': obj
+        });
         
-        loader.load(url, function(obj) {
-            loadingModels--;
-            obj.position.x = pos_x ? pos_x : 0;
-            obj.position.y = pos_y ? pos_y: 0;
-            obj.position.z = pos_z ? pos_z : 0;
-            obj.rotation.x = rot_x ? radianFromAngle(rot_x) : 0;
-            obj.rotation.y = rot_y ? radianFromAngle(rot_y): 0;
-            obj.rotation.z = rot_z ? radianFromAngle(rot_z) : 0;
+        // loader.load(url, function(obj) {
+        //     loadingModels--;
+        //     obj.position.x = pos_x ? pos_x : 0;
+        //     obj.position.y = pos_y ? pos_y: 0;
+        //     obj.position.z = pos_z ? pos_z : 0;
+        //     obj.rotation.x = rot_x ? radianFromAngle(rot_x) : 0;
+        //     obj.rotation.y = rot_y ? radianFromAngle(rot_y): 0;
+        //     obj.rotation.z = rot_z ? radianFromAngle(rot_z) : 0;
 
-            objects.push({
-                'id': id,
-                'object': obj
-            });
+        //     objects.push({
+        //         'id': id,
+        //         'object': obj
+        //     });
             
-            loaded ? loaded('loadModel: ' + id) : defaultLoaded();
+        //     loaded ? loaded('loadModel: ' + id) : defaultLoaded();
 
-            if(loadingModels === 0) {
-                isReady = true;
-                finish ? finish() : defaultFinish();
-            }
-        }, onProgress, onError);
+        //     if(loadingModels === 0) {
+        //         isReady = true;
+        //         finish ? finish() : defaultFinish();
+        //     }
+        // }, onProgress, onError);
     }
 
     /**
