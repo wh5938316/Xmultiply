@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "clean": "rm -rf ./lib && mkdir ./lib",
-    "lib": "./node_modules/.bin/babel src --copy-files --source-maps --extensions .es6,.es,.js --out-dir lib"
+    "lib": "npm clean && ./node_modules/.bin/babel src --copy-files --source-maps --extensions .es6,.es,.js --out-dir lib"
   },
   "repository": {
     "type": "git",
