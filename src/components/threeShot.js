@@ -184,9 +184,12 @@ const ThreeShot = function(props) {
 
         index = index ? index : 0;
 
-        let child = object.object.children[i];
-        let texture = new THREE.CanvasTexture(canvas);
-        child.material.map = texture;
+        let child = object.object.children[index];
+        
+        if(child) {
+            let texture = new THREE.CanvasTexture(canvas);
+            child.material.map = texture;
+        }
     }
 
     ThreeShot.prototype.shot = function(resultPixel) {
