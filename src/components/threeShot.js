@@ -144,8 +144,8 @@ const ThreeShot = function(props) {
         obj.rotation.z = rot_z ? radianFromAngle(rot_z) : 0;
 
         objects.push({
-            'id': id,
-            'object': obj
+            id: id,
+            object: obj
         });
         
         // loader.load(url, function(obj) {
@@ -184,13 +184,9 @@ const ThreeShot = function(props) {
 
         index = index ? index : 0;
 
-        for(let i = 0; i < object.object.children.length; i++) {
-            let child = object.object.children[i];
-            if(child instanceof THREE.Mesh && (i === index)) {
-                let texture = new THREE.CanvasTexture(canvas);
-                child.material.map = texture;
-            }
-        }
+        let child = object.object.children[i];
+        let texture = new THREE.CanvasTexture(canvas);
+        child.material.map = texture;
     }
 
     ThreeShot.prototype.shot = function(resultPixel) {
