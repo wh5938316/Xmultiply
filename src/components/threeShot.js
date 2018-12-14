@@ -12,7 +12,11 @@ const ThreeShot = function(props) {
         objects = [];
     
     // 设置透明背景
-    const threeRenderer = new THREE.WebGLRenderer( { alpha: true } );
+    const threeRenderer = new THREE.WebGLRenderer( {
+        logging: false,
+        alpha: true,
+        antialias: true 
+    } );
     threeRenderer.setPixelRatio( window.devicePixelRatio );
     threeRenderer.setSize( pixel, pixel );
 
@@ -59,7 +63,7 @@ const ThreeShot = function(props) {
             rotation: {
                 x: camera.rotation.x,
                 y: camera.rotation.y,
-                z: camera.rotation.y,
+                z: camera.rotation.z,
             }
         }
     }
@@ -185,10 +189,11 @@ const ThreeShot = function(props) {
         index = index ? index : 0;
 
         let child = object.object.children[index];
-        
+
         if(child) {
             let texture = new THREE.CanvasTexture(canvas);
             child.material.map = texture;
+            child.material.transparent = true;
         }
     }
 
@@ -203,7 +208,7 @@ const ThreeShot = function(props) {
         }
         threeRenderer.render( scene, camera );
         let dom = threeRenderer.domElement;
-        ctx.drawImage(dom, 0, 0, pixel, pixel);
+        ctx.drawImage(dom, 0, 0, resultPixel, resultPixel);
 
         return cvs;
     }
