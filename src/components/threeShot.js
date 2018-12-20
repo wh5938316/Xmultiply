@@ -139,7 +139,8 @@ const ThreeShot = function(props) {
         //         finish ? finish() : defaultFinish();
         //     }
         // };
-
+        console.log(rot_x ? radianFromAngle(rot_x) : 0, rot_y ? radianFromAngle(rot_y): 0, rot_z ? radianFromAngle(rot_z) : 0)
+        console.log(rot_x, rot_y, rot_z)
         obj.position.x = pos_x ? pos_x : 0;
         obj.position.y = pos_y ? pos_y: 0;
         obj.position.z = pos_z ? pos_z : 0;
